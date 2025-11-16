@@ -1,0 +1,442 @@
+#+TITLE: Campaign Manager - Next Steps Guide
+#+AUTHOR: Development Team
+#+DATE: November 16, 2024
+#+OPTIONS: toc:2 num:t
+
+* Prerequisites Setup
+** DONE Verify Flutter Installation
+   - [ ] Open terminal/command prompt
+   - [ ] Run: ~flutter --version~
+   - [ ] Expected output: Flutter 3.16.0 or higher
+   - [ ] If not installed, visit: https://docs.flutter.dev/get-started/install
+
+** DONE Verify Android SDK
+   - [ ] Run: ~flutter doctor~
+   - [ ] Check "Android toolchain" shows green checkmark
+   - [ ] If issues, run: ~flutter doctor --android-licenses~
+   - [ ] Accept all licenses by typing 'y'
+
+** DONE Setup Android Emulator or Device
+*** Option A: Using Emulator
+    - [ ] Open Android Studio
+    - [ ] Click "More Actions" → "Virtual Device Manager"
+    - [ ] Click "Create Device"
+    - [ ] Select "Pixel 6" (or any phone)
+    - [ ] Select system image "API 34" (Android 14)
+    - [ ] Click "Finish"
+    - [ ] Click play button to start emulator
+    - [ ] Wait for emulator to fully boot
+
+*** Option B: Using Physical Device
+    - [ ] Enable "Developer Options" on phone
+      - Settings → About Phone → Tap "Build Number" 7 times
+    - [ ] Enable "USB Debugging"
+      - Settings → Developer Options → USB Debugging → ON
+    - [ ] Connect phone via USB cable
+    - [ ] Accept "Allow USB debugging" prompt on phone
+    - [ ] Run: ~flutter devices~
+    - [ ] Verify your device appears in the list
+
+* Clone and Setup Project
+** DONE Clone Repository
+   #+BEGIN_SRC bash
+   # Navigate to your projects directory
+   cd ~/projects
+
+   # OR create one if it doesn't exist
+   mkdir -p ~/projects && cd ~/projects
+
+   # Clone the repository
+   git clone <your-repository-url> campaign_manager
+
+   # Navigate into project directory
+   cd campaign_manager
+   #+END_SRC
+
+** DONE Verify Project Structure
+   #+BEGIN_SRC bash
+   # List main directories
+   ls -la
+
+   # Expected to see:
+   # - android/
+   # - lib/
+   # - assets/
+   # - pubspec.yaml
+   # - README.md
+   # - PROJECT_PLAN.md
+   #+END_SRC
+
+** DONE Install Dependencies
+   #+BEGIN_SRC bash
+   # Clean any existing builds
+   flutter clean
+
+   # Get all dependencies
+   flutter pub get
+
+   # Expected output: "Got dependencies!"
+   #+END_SRC
+
+** DONE Verify No Analysis Errors
+   #+BEGIN_SRC bash
+   # Run static analysis
+   flutter analyze
+
+   # Should show: "No issues found!"
+   # If there are warnings, they are likely minor
+   #+END_SRC
+
+* Running the Application
+** DONE Check Connected Devices
+   #+BEGIN_SRC bash
+   flutter devices
+
+   # Expected output shows your emulator or physical device
+   # Example:
+   # Pixel 6 (mobile) • emulator-5554 • android-arm64 • Android 14
+   #+END_SRC
+
+** DONE Run in Debug Mode
+   #+BEGIN_SRC bash
+   # Run the app
+   flutter run
+
+   # Wait for compilation (first time takes 2-5 minutes)
+   # App will launch on device/emulator
+   #+END_SRC
+
+** DONE Verify Hot Reload Works
+   - [ ] Make a small change in ~lib/core/constants/app_strings.dart~
+   - [ ] Change ~appName~ to something else
+   - [ ] Press 'r' in terminal (hot reload)
+   - [ ] See changes reflected immediately
+   - [ ] Revert the change
+
+* Testing All Features
+** DONE Dashboard Feature
+   - [ ] App opens to Dashboard screen
+   - [ ] Verify greeting shows (Good Morning/Afternoon/Evening)
+   - [ ] Check metrics cards display numbers
+   - [ ] Verify growth trends show percentages
+   - [ ] See recent activity list with items
+   - [ ] Pull down to refresh - loading indicator appears
+   - [ ] Data refreshes successfully
+
+** DONE Campaigns Feature
+   - [ ] Tap "Campaigns" in bottom navigation
+   - [ ] See list of campaigns with cards
+   - [ ] Tap "Active" tab - shows only active campaigns
+   - [ ] Tap "Draft" tab - shows draft campaigns
+   - [ ] Tap "Completed" tab - shows completed campaigns
+   - [ ] Tap "All" tab - shows all campaigns
+   - [ ] Verify each campaign card shows:
+     - Campaign name
+     - Status chip (colored badge)
+     - Platform badge (Instagram, Facebook, etc.)
+     - Start date
+     - Budget and target reach
+   - [ ] Pull down to refresh works
+
+** DONE Clients Feature
+   - [ ] Tap "Clients" in bottom navigation
+   - [ ] See list of client cards
+   - [ ] Each card shows:
+     - Avatar with initial
+     - Client name
+     - Company name
+     - Social media icons (Instagram, Facebook, Twitter, YouTube)
+   - [ ] Tap search bar
+   - [ ] Type "Riyadh"
+   - [ ] List filters to show matching clients
+   - [ ] Clear search
+   - [ ] All clients reappear
+   - [ ] Pull down to refresh works
+
+** DONE Analytics Feature
+   - [ ] Tap "Analytics" in bottom navigation
+   - [ ] See performance overview cards
+     - Avg. Engagement Rate percentage
+     - Avg. CTR percentage
+   - [ ] Scroll down to see Engagement Trend chart
+     - Line chart with data points
+     - X-axis shows dates
+     - Y-axis shows engagement numbers
+   - [ ] Continue scrolling to Reach by Day chart
+     - Bar chart visualization
+     - Each bar represents daily reach
+   - [ ] See Total Metrics card at bottom
+     - Impressions total
+     - Reach total
+     - Engagement total
+     - Followers gained
+     - Clicks, Shares, Comments
+
+** DONE Tasks Feature
+   - [ ] Tap "Tasks" in bottom navigation
+   - [ ] See list of tasks with checkboxes
+   - [ ] Each task shows:
+     - Checkbox for completion
+     - Task title
+     - Description (if available)
+     - Priority badge (Low/Medium/High/Urgent)
+     - Due date indicator
+   - [ ] Tap checkbox on a task
+   - [ ] Task marks as completed (strikethrough text)
+   - [ ] Uncheck the task
+   - [ ] Task returns to pending state
+   - [ ] Swipe a task left to reveal delete action
+   - [ ] Tap red delete button
+   - [ ] Task is removed from list
+   - [ ] Tap floating action button (+)
+   - [ ] Add task dialog appears
+   - [ ] Enter task title: "Test task"
+   - [ ] Enter description: "This is a test"
+   - [ ] Select priority: High
+   - [ ] Tap "Add Task"
+   - [ ] New task appears in list
+   - [ ] Tap menu icon (3 dots) in app bar
+   - [ ] Select "Pending" - shows only pending tasks
+   - [ ] Select "Completed" - shows only completed tasks
+   - [ ] Select "All Tasks" - shows all tasks
+
+* Building Release APK
+** DONE Prepare for Release Build
+   #+BEGIN_SRC bash
+   # Ensure you're in project root
+   pwd
+   # Should show: /path/to/campaign_manager
+
+   # Clean previous builds
+   flutter clean
+
+   # Get dependencies again
+   flutter pub get
+   #+END_SRC
+
+** DONE Build Release APK
+   #+BEGIN_SRC bash
+   # Build release APK
+   flutter build apk --release
+
+   # This takes 3-10 minutes
+   # Wait for "Built build/app/outputs/flutter-apk/app-release.apk"
+   #+END_SRC
+
+** DONE Locate Built APK
+   #+BEGIN_SRC bash
+   # Find the APK file
+   ls -lh build/app/outputs/flutter-apk/
+
+   # You should see:
+   # app-release.apk (around 15-25 MB)
+   #+END_SRC
+
+** DONE Copy APK to Accessible Location
+   #+BEGIN_SRC bash
+   # Copy to project root for easy access
+   cp build/app/outputs/flutter-apk/app-release.apk ./CampaignManager.apk
+
+   # Verify copy
+   ls -lh CampaignManager.apk
+   #+END_SRC
+
+** DONE Install APK on Device (Optional)
+   #+BEGIN_SRC bash
+   # If device is connected
+   flutter install --release
+
+   # OR manually install
+   adb install CampaignManager.apk
+   #+END_SRC
+
+* Interview Preparation
+** DONE Code Walkthrough Practice
+*** Architecture Overview (2 minutes)
+    - [ ] Open ~lib/~ folder in IDE
+    - [ ] Explain folder structure:
+      - ~core/~ = shared utilities
+      - ~features/~ = feature modules
+      - ~shared/~ = common services
+    - [ ] Open ~lib/features/dashboard/~ as example
+    - [ ] Show 3 layers:
+      - ~presentation/~ = UI and state
+      - ~domain/~ = business logic
+      - ~data/~ = data access
+    - [ ] Emphasize: "This is Clean Architecture"
+
+*** State Management (2 minutes)
+    - [ ] Open ~lib/features/dashboard/presentation/bloc/dashboard_bloc.dart~
+    - [ ] Show Events (user actions)
+    - [ ] Show States (UI representations)
+    - [ ] Show BLoC (business logic)
+    - [ ] Explain: "Events go in, States come out"
+    - [ ] Show how UI subscribes in ~dashboard_page.dart~
+
+*** Database Design (2 minutes)
+    - [ ] Open ~lib/shared/services/database_service.dart~
+    - [ ] Show table schemas
+    - [ ] Point out relationships (foreign keys)
+    - [ ] Show indexes for performance
+    - [ ] Explain seeded data relevance to their business
+
+*** Dependency Injection (1 minute)
+    - [ ] Open ~lib/injection.dart~
+    - [ ] Show how services are registered
+    - [ ] Explain: "Easy to swap implementations"
+    - [ ] Mention: "Facilitates testing"
+
+** DONE Practice Demo Flow (5 minutes total)
+   1. [ ] Launch app (10 seconds)
+   2. [ ] Dashboard tour (45 seconds)
+      - Show metrics
+      - Explain growth calculations
+      - Point out Saudi client data
+   3. [ ] Campaigns demo (60 seconds)
+      - Filter by status
+      - Show campaign details
+      - Explain platform badges
+   4. [ ] Clients demo (45 seconds)
+      - Show search functionality
+      - Point out social media integration
+   5. [ ] Analytics demo (60 seconds)
+      - Walk through charts
+      - Explain metrics calculations
+   6. [ ] Tasks demo (45 seconds)
+      - Add a task
+      - Complete a task
+      - Delete a task
+   7. [ ] Quick code highlight (60 seconds)
+      - Show one clean architecture feature
+      - Emphasize professional patterns
+
+** DONE Prepare for Common Questions
+*** Q: Why did you choose BLoC pattern?
+    - Strict unidirectional data flow
+    - Highly testable (events in, states out)
+    - Scales well for complex apps
+    - Industry standard in Flutter
+    - Great IDE support and tooling
+
+*** Q: Why Clean Architecture?
+    - Separates concerns clearly
+    - Business logic independent of UI
+    - Easy to test each layer
+    - Can swap database for API easily
+    - Maintainable long-term
+
+*** Q: How would you add API integration?
+    - Create RemoteDataSource alongside LocalDataSource
+    - Repository coordinates between both
+    - Add network client (dio or http)
+    - Implement caching strategy
+    - No changes needed to UI or BLoC
+
+*** Q: How would you handle offline sync?
+    - Queue changes locally with timestamps
+    - Sync when network available
+    - Conflict resolution strategy
+    - Optimistic UI updates
+    - Background sync service
+
+*** Q: Why SQLite vs other storage?
+    - Relational data model fits use case
+    - Complex queries possible
+    - Proven reliability
+    - Easy migration to server DB
+    - Better than key-value for this data
+
+*** Q: Why this specific app?
+    - Researched Al-Graphy's business model
+    - Social media marketing company needs this
+    - Shows understanding of domain
+    - Demonstrates practical Flutter skills
+    - Directly relevant to your operations
+
+** DONE Backup Plan
+   - [ ] Ensure phone is charged to 100%
+   - [ ] Have APK on Google Drive as backup
+   - [ ] Screenshot key features if demo fails
+   - [ ] Have code open in IDE ready to show
+   - [ ] Know key file locations by heart
+
+* Final Checklist Before Interview
+** DONE Technical Readiness
+   - [ ] App runs without crashes
+   - [ ] All 5 features work correctly
+   - [ ] Release APK is built and tested
+   - [ ] Code is committed and pushed
+   - [ ] Can explain every architectural decision
+
+** DONE Physical Setup
+   - [ ] Phone charged to 100%
+   - [ ] APK installed on phone
+   - [ ] Laptop has project open
+   - [ ] IDE opened to key files
+   - [ ] Terminal ready for any commands
+
+** DONE Mental Preparation
+   - [ ] Practiced demo flow 3+ times
+   - [ ] Rehearsed talking points
+   - [ ] Prepared for technical questions
+   - [ ] Know your "why" for each decision
+   - [ ] Confidence in your work!
+
+* Troubleshooting Common Issues
+** ISSUE: Flutter pub get fails
+   #+BEGIN_SRC bash
+   # Clear pub cache
+   flutter pub cache repair
+
+   # Try again
+   flutter pub get
+   #+END_SRC
+
+** ISSUE: Build fails with Gradle error
+   #+BEGIN_SRC bash
+   # Clean gradle cache
+   cd android
+   ./gradlew clean
+   cd ..
+
+   # Rebuild
+   flutter clean
+   flutter pub get
+   flutter build apk --release
+   #+END_SRC
+
+** ISSUE: App crashes on launch
+   - Check ~flutter logs~ for error messages
+   - Ensure device has Android 5.0+ (API 21+)
+   - Try uninstalling and reinstalling
+
+** ISSUE: Database errors
+   - Uninstall app completely
+   - Reinstall to reset database
+   - Database recreates with seed data
+
+** ISSUE: Charts not rendering
+   - Pull to refresh the page
+   - Check that seed data exists
+   - Verify fl_chart package installed
+
+* Post-Interview Actions
+** TODO Follow Up
+   - [ ] Send thank you email within 24 hours
+   - [ ] Mention specific topics discussed
+   - [ ] Offer to share repository access
+   - [ ] Express continued interest
+
+** TODO If Asked for Improvements
+   - [ ] Add unit tests for BLoCs
+   - [ ] Implement API integration
+   - [ ] Add push notifications
+   - [ ] Create onboarding screens
+   - [ ] Implement dark mode
+   - [ ] Add localization support
+
+** TODO Document Lessons Learned
+   - [ ] Note questions asked
+   - [ ] Record feedback received
+   - [ ] Identify areas to improve
+   - [ ] Plan next learning steps
