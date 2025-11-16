@@ -1,0 +1,484 @@
+#+TITLE: Git Repository Setup - Complete Linux CLI Guide
+#+AUTHOR: Development Team
+#+DATE: November 16, 2024
+#+OPTIONS: toc:2 num:t
+
+* SSH Key Setup
+** Generate New SSH Key
+   #+BEGIN_SRC bash
+   # Navigate to SSH directory
+   cd ~/.ssh
+
+   # If directory doesn't exist, create it
+   mkdir -p ~/.ssh && cd ~/.ssh
+
+   # Generate new SSH key (replace with your email)
+   ssh-keygen -t ed25519 -C "your.email@example.com"
+
+   # When prompted:
+   # "Enter file in which to save the key": Press Enter (use default)
+   # "Enter passphrase": Type a secure passphrase (or press Enter for none)
+   # "Enter same passphrase again": Repeat passphrase
+
+   # Expected output:
+   # Your identification has been saved in /home/username/.ssh/id_ed25519
+   # Your public key has been saved in /home/username/.ssh/id_ed25519.pub
+   #+END_SRC
+
+** Verify SSH Key Created
+   #+BEGIN_SRC bash
+   # List SSH keys
+   ls -la ~/.ssh/
+
+   # You should see:
+   # id_ed25519      (private key - NEVER share this)
+   # id_ed25519.pub  (public key - this goes to GitHub/GitLab)
+   #+END_SRC
+
+** Start SSH Agent
+   #+BEGIN_SRC bash
+   # Start the SSH agent in background
+   eval "$(ssh-agent -s)"
+
+   # Expected output: Agent pid 12345
+
+   # Add your SSH key to the agent
+   ssh-add ~/.ssh/id_ed25519
+
+   # If you set a passphrase, enter it when prompted
+   # Expected output: Identity added: /home/username/.ssh/id_ed25519
+   #+END_SRC
+
+** Copy Public Key to Clipboard
+   #+BEGIN_SRC bash
+   # Option 1: Using xclip (install if needed: sudo apt install xclip)
+   cat ~/.ssh/id_ed25519.pub | xclip -selection clipboard
+
+   # Option 2: Using xsel (install if needed: sudo apt install xsel)
+   cat ~/.ssh/id_ed25519.pub | xsel --clipboard
+
+   # Option 3: Just display it and copy manually
+   cat ~/.ssh/id_ed25519.pub
+
+   # The output looks like:
+   # ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG... your.email@example.com
+   #+END_SRC
+
+* Add SSH Key to GitHub
+** Navigate to GitHub Settings
+   - [ ] Open browser: https://github.com
+   - [ ] Log in to your account
+   - [ ] Click your profile picture (top right)
+   - [ ] Click "Settings"
+   - [ ] In left sidebar, click "SSH and GPG keys"
+   - [ ] Click "New SSH key" button (green button)
+
+** Add the Key
+   - [ ] Title: "Linux Development Machine" (or descriptive name)
+   - [ ] Key type: "Authentication Key"
+   - [ ] Key: Paste your public key (from clipboard)
+   - [ ] Click "Add SSH key" button
+   - [ ] Confirm with your GitHub password if prompted
+
+** Test SSH Connection
+   #+BEGIN_SRC bash
+   # Test connection to GitHub
+   ssh -T git@github.com
+
+   # First time you'll see:
+   # "The authenticity of host 'github.com' can't be established..."
+   # Type: yes
+
+   # Expected success message:
+   # "Hi username! You've successfully authenticated..."
+   #+END_SRC
+
+* Configure Git Identity
+** Set Global Git Configuration
+   #+BEGIN_SRC bash
+   # Set your name (use your real name)
+   git config --global user.name "Your Full Name"
+
+   # Set your email (must match GitHub account)
+   git config --global user.email "your.email@example.com"
+
+   # Set default branch name
+   git config --global init.defaultBranch main
+
+   # Set default editor (optional, choose one)
+   git config --global core.editor "vim"
+   # OR
+   git config --global core.editor "nano"
+   # OR
+   git config --global core.editor "code --wait"  # VS Code
+
+   # Enable colored output
+   git config --global color.ui auto
+
+   # Verify configuration
+   git config --global --list
+
+   # Expected output:
+   # user.name=Your Full Name
+   # user.email=your.email@example.com
+   # init.defaultbranch=main
+   # core.editor=vim
+   # color.ui=auto
+   #+END_SRC
+
+* Clone the Repository
+** Create Projects Directory
+   #+BEGIN_SRC bash
+   # Create a directory for your projects
+   mkdir -p ~/projects
+
+   # Navigate to it
+   cd ~/projects
+
+   # Verify location
+   pwd
+   # Output: /home/username/projects
+   #+END_SRC
+
+** Clone Using SSH (Recommended)
+   #+BEGIN_SRC bash
+   # Clone the repository via SSH
+   git clone git@github.com:YOUR_USERNAME/YOUR_REPO_NAME.git campaign_manager
+
+   # Replace YOUR_USERNAME with your GitHub username
+   # Replace YOUR_REPO_NAME with actual repository name
+
+   # Example:
+   # git clone git@github.com:neuroAbe/app.git campaign_manager
+
+   # Expected output:
+   # Cloning into 'campaign_manager'...
+   # remote: Enumerating objects: 100, done.
+   # remote: Counting objects: 100% (100/100), done.
+   # remote: Compressing objects: 100% (80/80), done.
+   # remote: Total 100 (delta 20), reused 100 (delta 20)
+   # Receiving objects: 100% (100/100), 50.00 KiB | 1.00 MiB/s, done.
+   # Resolving deltas: 100% (20/20), done.
+   #+END_SRC
+
+** Alternative: Clone Using HTTPS
+   #+BEGIN_SRC bash
+   # If SSH doesn't work, use HTTPS
+   git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git campaign_manager
+
+   # You'll be prompted for:
+   # Username: your GitHub username
+   # Password: your GitHub Personal Access Token (NOT your password)
+
+   # To create a Personal Access Token:
+   # GitHub → Settings → Developer settings → Personal access tokens → Generate new token
+   #+END_SRC
+
+** Navigate Into Repository
+   #+BEGIN_SRC bash
+   # Enter the cloned directory
+   cd campaign_manager
+
+   # Verify you're in the right place
+   pwd
+   # Output: /home/username/projects/campaign_manager
+
+   # List contents
+   ls -la
+
+   # Expected files:
+   # .git/
+   # android/
+   # lib/
+   # assets/
+   # pubspec.yaml
+   # README.md
+   # PROJECT_PLAN.md
+   # NEXT_STEPS.org
+   #+END_SRC
+
+* Checkout the Correct Branch
+** View Available Branches
+   #+BEGIN_SRC bash
+   # See all branches (local and remote)
+   git branch -a
+
+   # Expected output:
+   # * main
+   #   remotes/origin/HEAD -> origin/main
+   #   remotes/origin/claude/flutter-interview-showcase-01BTQPFxq2rMci5ym1ieqwcd
+   #   remotes/origin/main
+   #+END_SRC
+
+** Checkout the Feature Branch
+   #+BEGIN_SRC bash
+   # Checkout the Flutter app branch
+   git checkout claude/flutter-interview-showcase-01BTQPFxq2rMci5ym1ieqwcd
+
+   # Expected output:
+   # Branch 'claude/flutter-interview-showcase-01BTQPFxq2rMci5ym1ieqwcd'
+   # set up to track remote branch 'claude/flutter-interview-showcase-01BTQPFxq2rMci5ym1ieqwcd'
+   # from 'origin'.
+   # Switched to a new branch 'claude/flutter-interview-showcase-01BTQPFxq2rMci5ym1ieqwcd'
+
+   # Verify current branch
+   git branch
+   # Output shows asterisk (*) next to current branch
+   #+END_SRC
+
+** Verify All Files Present
+   #+BEGIN_SRC bash
+   # Check project structure
+   ls -la
+
+   # Count total files
+   find . -type f -not -path './.git/*' | wc -l
+   # Expected: approximately 72 files
+
+   # View recent commits
+   git log --oneline -5
+
+   # Expected output:
+   # bde8c79 Add comprehensive next steps guide in org-mode format
+   # fea1431 Implement complete Flutter Campaign Manager app
+   # 7579df0 Add comprehensive project documentation and implementation plan
+   #+END_SRC
+
+* Keeping Repository Updated
+** Pull Latest Changes
+   #+BEGIN_SRC bash
+   # Fetch latest from remote
+   git fetch origin
+
+   # Pull changes into current branch
+   git pull origin claude/flutter-interview-showcase-01BTQPFxq2rMci5ym1ieqwcd
+
+   # Or simply (if tracking is set up)
+   git pull
+   #+END_SRC
+
+** Check Repository Status
+   #+BEGIN_SRC bash
+   # See current status
+   git status
+
+   # Expected output for clean repo:
+   # On branch claude/flutter-interview-showcase-01BTQPFxq2rMci5ym1ieqwcd
+   # Your branch is up to date with 'origin/claude/flutter-interview-showcase-01BTQPFxq2rMci5ym1ieqwcd'
+   # nothing to commit, working tree clean
+   #+END_SRC
+
+* Troubleshooting
+** SSH Key Permission Issues
+   #+BEGIN_SRC bash
+   # Fix SSH directory permissions
+   chmod 700 ~/.ssh
+
+   # Fix private key permissions
+   chmod 600 ~/.ssh/id_ed25519
+
+   # Fix public key permissions
+   chmod 644 ~/.ssh/id_ed25519.pub
+
+   # Fix known_hosts permissions
+   chmod 644 ~/.ssh/known_hosts
+   #+END_SRC
+
+** SSH Agent Not Running
+   #+BEGIN_SRC bash
+   # Check if agent is running
+   echo $SSH_AGENT_PID
+
+   # If empty, start it
+   eval "$(ssh-agent -s)"
+
+   # Add key again
+   ssh-add ~/.ssh/id_ed25519
+
+   # To auto-start agent, add to ~/.bashrc or ~/.zshrc:
+   echo 'eval "$(ssh-agent -s)"' >> ~/.bashrc
+   echo 'ssh-add ~/.ssh/id_ed25519 2>/dev/null' >> ~/.bashrc
+   #+END_SRC
+
+** Permission Denied (publickey)
+   #+BEGIN_SRC bash
+   # Verify key is added to agent
+   ssh-add -l
+
+   # Should list your key
+   # If empty, add it:
+   ssh-add ~/.ssh/id_ed25519
+
+   # Verify key matches GitHub
+   cat ~/.ssh/id_ed25519.pub
+   # Compare with key shown in GitHub Settings → SSH keys
+
+   # Test connection with verbose output
+   ssh -vT git@github.com
+   # Look for "Offering public key" and "Server accepts key"
+   #+END_SRC
+
+** Clone Fails with "Repository not found"
+   #+BEGIN_SRC bash
+   # Verify repository URL is correct
+   # Check you have access to the repository
+   # Ensure SSH key is added to your GitHub account
+
+   # Try HTTPS as fallback
+   git clone https://github.com/USERNAME/REPO.git
+   #+END_SRC
+
+** Git Not Installed
+   #+BEGIN_SRC bash
+   # Check if git is installed
+   git --version
+
+   # Install on Ubuntu/Debian
+   sudo apt update
+   sudo apt install git
+
+   # Install on Fedora
+   sudo dnf install git
+
+   # Install on Arch
+   sudo pacman -S git
+
+   # Verify installation
+   git --version
+   # Expected: git version 2.x.x
+   #+END_SRC
+
+* Quick Reference Commands
+** Most Used Git Commands
+   #+BEGIN_SRC bash
+   # Clone repository
+   git clone git@github.com:user/repo.git
+
+   # Check status
+   git status
+
+   # View branches
+   git branch -a
+
+   # Switch branch
+   git checkout branch-name
+
+   # Pull latest
+   git pull
+
+   # View commit history
+   git log --oneline
+
+   # See changes
+   git diff
+
+   # Add files
+   git add .
+
+   # Commit changes
+   git commit -m "message"
+
+   # Push to remote
+   git push
+   #+END_SRC
+
+** SSH Key Management
+   #+BEGIN_SRC bash
+   # List keys in agent
+   ssh-add -l
+
+   # Remove all keys from agent
+   ssh-add -D
+
+   # Add specific key
+   ssh-add ~/.ssh/id_ed25519
+
+   # Test GitHub connection
+   ssh -T git@github.com
+   #+END_SRC
+
+* Complete One-Shot Setup Script
+  #+BEGIN_SRC bash
+  #!/bin/bash
+  # Save this as setup_repo.sh and run: bash setup_repo.sh
+
+  # Colors for output
+  RED='\033[0;31m'
+  GREEN='\033[0;32m'
+  NC='\033[0m' # No Color
+
+  echo -e "${GREEN}=== Campaign Manager Repository Setup ===${NC}"
+
+  # Step 1: Check git installation
+  if ! command -v git &> /dev/null; then
+      echo -e "${RED}Git not installed. Installing...${NC}"
+      sudo apt update && sudo apt install -y git
+  fi
+  echo -e "${GREEN}✓ Git installed${NC}"
+
+  # Step 2: Configure git (replace with your info)
+  echo "Configuring Git..."
+  read -p "Enter your full name: " git_name
+  read -p "Enter your email: " git_email
+  git config --global user.name "$git_name"
+  git config --global user.email "$git_email"
+  echo -e "${GREEN}✓ Git configured${NC}"
+
+  # Step 3: Generate SSH key if not exists
+  if [ ! -f ~/.ssh/id_ed25519 ]; then
+      echo "Generating SSH key..."
+      ssh-keygen -t ed25519 -C "$git_email" -f ~/.ssh/id_ed25519 -N ""
+      echo -e "${GREEN}✓ SSH key generated${NC}"
+  else
+      echo -e "${GREEN}✓ SSH key already exists${NC}"
+  fi
+
+  # Step 4: Start SSH agent and add key
+  eval "$(ssh-agent -s)"
+  ssh-add ~/.ssh/id_ed25519
+  echo -e "${GREEN}✓ SSH key added to agent${NC}"
+
+  # Step 5: Display public key
+  echo ""
+  echo -e "${RED}=== IMPORTANT: Copy this SSH key to GitHub ===${NC}"
+  echo "Go to: GitHub → Settings → SSH Keys → New SSH Key"
+  echo ""
+  cat ~/.ssh/id_ed25519.pub
+  echo ""
+  read -p "Press Enter after you've added the key to GitHub..."
+
+  # Step 6: Test SSH connection
+  echo "Testing GitHub connection..."
+  ssh -T git@github.com
+
+  # Step 7: Clone repository
+  echo ""
+  read -p "Enter the SSH clone URL (git@github.com:user/repo.git): " repo_url
+  mkdir -p ~/projects
+  cd ~/projects
+  git clone "$repo_url" campaign_manager
+  cd campaign_manager
+
+  # Step 8: Checkout feature branch
+  git checkout claude/flutter-interview-showcase-01BTQPFxq2rMci5ym1ieqwcd
+
+  echo ""
+  echo -e "${GREEN}=== Setup Complete! ===${NC}"
+  echo "Repository cloned to: ~/projects/campaign_manager"
+  echo "Current branch: $(git branch --show-current)"
+  echo ""
+  echo "Next steps:"
+  echo "1. cd ~/projects/campaign_manager"
+  echo "2. flutter pub get"
+  echo "3. flutter run"
+  #+END_SRC
+
+* Verification Checklist
+  - [ ] SSH key generated in ~/.ssh/
+  - [ ] Public key added to GitHub account
+  - [ ] SSH connection to GitHub successful
+  - [ ] Git global configuration set
+  - [ ] Repository cloned successfully
+  - [ ] Feature branch checked out
+  - [ ] All 72+ files present
+  - [ ] Ready to run Flutter commands
