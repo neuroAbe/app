@@ -11,6 +11,8 @@ import 'package:campaign_manager/core/widgets/platform_badge.dart';
 import 'package:campaign_manager/core/utils/extensions.dart';
 import 'package:campaign_manager/features/campaigns/presentation/bloc/campaign_bloc.dart';
 import 'package:campaign_manager/features/campaigns/domain/entities/campaign_entity.dart';
+import 'package:campaign_manager/features/campaigns/presentation/pages/campaign_details_page.dart';
+import 'package:campaign_manager/features/campaigns/presentation/pages/add_edit_campaign_page.dart';
 
 class CampaignsPage extends StatefulWidget {
   const CampaignsPage({super.key});
@@ -100,7 +102,12 @@ class _CampaignsPageState extends State<CampaignsPage>
                 subtitle: 'Create your first campaign to get started',
                 action: ElevatedButton.icon(
                   onPressed: () {
-                    // TODO: Navigate to create campaign
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const AddEditCampaignPage(),
+                      ),
+                    );
                   },
                   icon: const Icon(Icons.add),
                   label: const Text(AppStrings.newCampaign),
@@ -128,7 +135,12 @@ class _CampaignsPageState extends State<CampaignsPage>
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // TODO: Navigate to create campaign
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const AddEditCampaignPage(),
+            ),
+          );
         },
         child: const Icon(Icons.add),
       ),
@@ -140,7 +152,15 @@ class _CampaignsPageState extends State<CampaignsPage>
       margin: const EdgeInsets.only(bottom: AppDimensions.md),
       child: InkWell(
         onTap: () {
-          // TODO: Navigate to campaign details
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => CampaignDetailsPage(
+                campaignId: campaign.id,
+                campaign: campaign,
+              ),
+            ),
+          );
         },
         borderRadius: BorderRadius.circular(AppDimensions.radiusMd),
         child: Padding(

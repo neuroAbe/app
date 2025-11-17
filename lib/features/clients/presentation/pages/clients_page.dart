@@ -8,6 +8,8 @@ import 'package:campaign_manager/core/widgets/error_view.dart';
 import 'package:campaign_manager/core/widgets/empty_state.dart';
 import 'package:campaign_manager/features/clients/presentation/bloc/client_bloc.dart';
 import 'package:campaign_manager/features/clients/domain/entities/client_entity.dart';
+import 'package:campaign_manager/features/clients/presentation/pages/client_details_page.dart';
+import 'package:campaign_manager/features/clients/presentation/pages/add_edit_client_page.dart';
 
 class ClientsPage extends StatefulWidget {
   const ClientsPage({super.key});
@@ -70,7 +72,12 @@ class _ClientsPageState extends State<ClientsPage> {
                       action: state.searchQuery == null
                           ? ElevatedButton.icon(
                               onPressed: () {
-                                // TODO: Navigate to add client
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const AddEditClientPage(),
+                                  ),
+                                );
                               },
                               icon: const Icon(Icons.add),
                               label: const Text(AppStrings.newClient),
@@ -103,7 +110,12 @@ class _ClientsPageState extends State<ClientsPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // TODO: Navigate to add client
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const AddEditClientPage(),
+            ),
+          );
         },
         child: const Icon(Icons.add),
       ),
@@ -145,7 +157,15 @@ class _ClientsPageState extends State<ClientsPage> {
       margin: const EdgeInsets.only(bottom: AppDimensions.md),
       child: InkWell(
         onTap: () {
-          // TODO: Navigate to client details
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => ClientDetailsPage(
+                clientId: client.id,
+                client: client,
+              ),
+            ),
+          );
         },
         borderRadius: BorderRadius.circular(AppDimensions.radiusMd),
         child: Padding(
