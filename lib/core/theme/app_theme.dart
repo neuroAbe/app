@@ -37,10 +37,10 @@ class AppTheme {
           fontWeight: FontWeight.w600,
         ),
       ),
-      cardTheme: CardTheme(
+      cardTheme: const CardThemeData(
         elevation: AppDimensions.cardElevation,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppDimensions.radiusMd),
+          borderRadius: BorderRadius.all(Radius.circular(AppDimensions.radiusMd)),
         ),
         color: AppColors.surface,
         surfaceTintColor: Colors.transparent,
