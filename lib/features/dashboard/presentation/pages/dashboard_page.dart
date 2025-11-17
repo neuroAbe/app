@@ -131,7 +131,7 @@ class _DashboardPageState extends State<DashboardPage> {
           physics: const NeverScrollableScrollPhysics(),
           mainAxisSpacing: AppDimensions.md,
           crossAxisSpacing: AppDimensions.md,
-          childAspectRatio: 1.3,
+          childAspectRatio: 1.1,
           children: [
             MetricCard(
               title: AppStrings.activeClients,

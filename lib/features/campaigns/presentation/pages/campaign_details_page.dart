@@ -180,7 +180,7 @@ class _CampaignDetailsPageState extends State<CampaignDetailsPage> {
                   AppColors.info,
                 ),
               ),
-              const SizedBox(width: AppDimensions.md),
+              const SizedBox(width: AppDimensions.sm),
               Expanded(
                 child: _buildMetricCard(
                   'Engagement',
@@ -189,7 +189,7 @@ class _CampaignDetailsPageState extends State<CampaignDetailsPage> {
                   AppColors.error,
                 ),
               ),
-              const SizedBox(width: AppDimensions.md),
+              const SizedBox(width: AppDimensions.sm),
               Expanded(
                 child: _buildMetricCard(
                   'Clicks',
