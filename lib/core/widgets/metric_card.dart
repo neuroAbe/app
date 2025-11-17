@@ -30,7 +30,6 @@ class MetricCard extends StatelessWidget {
           padding: const EdgeInsets.all(AppDimensions.md),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
