@@ -27,15 +27,16 @@ class MetricCard extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppDimensions.radiusMd),
         child: Padding(
-          padding: const EdgeInsets.all(AppDimensions.lg),
+          padding: const EdgeInsets.all(AppDimensions.md),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(AppDimensions.sm),
+                    padding: const EdgeInsets.all(AppDimensions.xs),
                     decoration: BoxDecoration(
                       color: (iconColor ?? AppColors.primary).withOpacity(0.1),
                       borderRadius: BorderRadius.circular(AppDimensions.radiusSm),
@@ -43,28 +44,34 @@ class MetricCard extends StatelessWidget {
                     child: Icon(
                       icon,
                       color: iconColor ?? AppColors.primary,
-                      size: AppDimensions.iconMd,
+                      size: AppDimensions.iconSm,
                     ),
                   ),
-                  if (trend != null) _buildTrendIndicator(),
+                  if (trend != null) Flexible(child: _buildTrendIndicator()),
                 ],
               ),
-              const SizedBox(height: AppDimensions.md),
-              Text(
-                value,
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
+              const Spacer(),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  value,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textPrimary,
+                  ),
                 ),
               ),
               const SizedBox(height: AppDimensions.xs),
               Text(
                 title,
                 style: const TextStyle(
-                  fontSize: 14,
+                  fontSize: 13,
                   color: AppColors.textSecondary,
                 ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
