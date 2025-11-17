@@ -222,40 +222,55 @@ class _CampaignsPageState extends State<CampaignsPage>
                 const SizedBox(height: AppDimensions.md),
                 const Divider(),
                 const SizedBox(height: AppDimensions.sm),
-                Row(
+                Wrap(
+                  spacing: AppDimensions.lg,
+                  runSpacing: AppDimensions.sm,
                   children: [
-                    if (campaign.budget != null) ...[
-                      Icon(
-                        Icons.attach_money,
-                        size: 16,
-                        color: AppColors.success,
+                    if (campaign.budget != null)
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.attach_money,
+                            size: 16,
+                            color: AppColors.success,
+                          ),
+                          Flexible(
+                            child: Text(
+                              campaign.budget!.currency,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.textPrimary,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        campaign.budget!.currency,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.textPrimary,
-                        ),
+                    if (campaign.targetReach != null)
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.visibility,
+                            size: 16,
+                            color: AppColors.info,
+                          ),
+                          const SizedBox(width: AppDimensions.xs),
+                          Flexible(
+                            child: Text(
+                              '${campaign.targetReach!.abbreviated} reach',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.textPrimary,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: AppDimensions.lg),
-                    ],
-                    if (campaign.targetReach != null) ...[
-                      Icon(
-                        Icons.visibility,
-                        size: 16,
-                        color: AppColors.info,
-                      ),
-                      const SizedBox(width: AppDimensions.xs),
-                      Text(
-                        '${campaign.targetReach!.abbreviated} reach',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                    ],
                   ],
                 ),
               ],
