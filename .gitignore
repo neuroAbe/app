@@ -41,6 +41,26 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+# Android generated files
+/android/.gradle/
+/android/local.properties
+/android/gradle/wrapper/gradle-wrapper.jar
+/android/gradlew
+/android/gradlew.bat
+/android/app/src/main/java/
+/android/app/src/main/res/mipmap-hdpi/
+/android/app/src/main/res/mipmap-mdpi/
+/android/app/src/main/res/mipmap-xhdpi/
+/android/app/src/main/res/mipmap-xxhdpi/
+/android/app/src/main/res/mipmap-xxxhdpi/
+
+# Linux platform build
+/linux/
+
+# Flutter metadata
+.metadata
+devtools_options.yaml
+
 # Generated files
 *.g.dart
 *.freezed.dart
