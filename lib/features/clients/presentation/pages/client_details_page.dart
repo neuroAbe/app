@@ -8,6 +8,7 @@ import 'package:campaign_manager/core/utils/extensions.dart';
 import 'package:campaign_manager/features/clients/presentation/bloc/client_bloc.dart';
 import 'package:campaign_manager/features/clients/domain/entities/client_entity.dart';
 import 'package:campaign_manager/features/campaigns/presentation/bloc/campaign_bloc.dart';
+import 'package:campaign_manager/features/clients/presentation/pages/add_edit_client_page.dart';
 
 class ClientDetailsPage extends StatefulWidget {
   final String clientId;
@@ -42,7 +43,14 @@ class _ClientDetailsPageState extends State<ClientDetailsPage> {
           IconButton(
             icon: const Icon(Icons.edit),
             onPressed: () {
-              // Edit client
+              if (widget.client != null) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => AddEditClientPage(client: widget.client),
+                  ),
+                );
+              }
             },
           ),
           PopupMenuButton<String>(
@@ -328,7 +336,12 @@ class _ClientDetailsPageState extends State<ClientDetailsPage> {
                 ),
                 TextButton(
                   onPressed: () {
-                    // View all campaigns for this client
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Navigate to Campaigns tab to view all campaigns'),
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
                   },
                   child: const Text('View All'),
                 ),
@@ -376,23 +389,24 @@ class _ClientDetailsPageState extends State<ClientDetailsPage> {
   }
 
   void _showDeleteConfirmation() {
+    final pageContext = context;
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: const Text('Delete Client'),
         content: const Text(
           'Are you sure you want to delete this client? All associated campaigns will also be deleted.',
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: const Text('Cancel'),
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.pop(context);
-              context.read<ClientBloc>().add(DeleteClient(widget.clientId));
-              Navigator.pop(this.context);
+              Navigator.pop(dialogContext);
+              pageContext.read<ClientBloc>().add(DeleteClient(widget.clientId));
+              Navigator.pop(pageContext);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.error,

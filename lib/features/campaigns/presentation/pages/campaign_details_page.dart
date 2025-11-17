@@ -11,6 +11,7 @@ import 'package:campaign_manager/core/utils/extensions.dart';
 import 'package:campaign_manager/features/campaigns/presentation/bloc/campaign_bloc.dart';
 import 'package:campaign_manager/features/campaigns/domain/entities/campaign_entity.dart';
 import 'package:campaign_manager/features/analytics/presentation/bloc/analytics_bloc.dart';
+import 'package:campaign_manager/features/campaigns/presentation/pages/add_edit_campaign_page.dart';
 
 class CampaignDetailsPage extends StatefulWidget {
   final String campaignId;
@@ -46,7 +47,14 @@ class _CampaignDetailsPageState extends State<CampaignDetailsPage> {
           IconButton(
             icon: const Icon(Icons.edit),
             onPressed: () {
-              // Edit campaign
+              if (widget.campaign != null) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => AddEditCampaignPage(campaign: widget.campaign),
+                  ),
+                );
+              }
             },
           ),
           PopupMenuButton<String>(
@@ -354,23 +362,24 @@ class _CampaignDetailsPageState extends State<CampaignDetailsPage> {
   }
 
   void _showDeleteConfirmation() {
+    final pageContext = context;
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: const Text('Delete Campaign'),
         content: const Text(
           'Are you sure you want to delete this campaign? This action cannot be undone.',
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: const Text('Cancel'),
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.pop(context);
-              context.read<CampaignBloc>().add(DeleteCampaign(widget.campaignId));
-              Navigator.pop(this.context);
+              Navigator.pop(dialogContext);
+              pageContext.read<CampaignBloc>().add(DeleteCampaign(widget.campaignId));
+              Navigator.pop(pageContext);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.error,
