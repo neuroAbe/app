@@ -33,7 +33,6 @@ class MetricCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
                     padding: const EdgeInsets.all(AppDimensions.sm),
@@ -47,7 +46,11 @@ class MetricCard extends StatelessWidget {
                       size: AppDimensions.iconMd,
                     ),
                   ),
-                  if (trend != null) _buildTrendIndicator(),
+                  const SizedBox(width: AppDimensions.sm),
+                  if (trend != null)
+                    Flexible(
+                      child: _buildTrendIndicator(),
+                    ),
                 ],
               ),
               const SizedBox(height: AppDimensions.md),
@@ -95,12 +98,15 @@ class MetricCard extends StatelessWidget {
             color: isPositive ? AppColors.success : AppColors.error,
           ),
           const SizedBox(width: 2),
-          Text(
-            '${isPositive ? '+' : ''}${trend!.toStringAsFixed(1)}%',
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: isPositive ? AppColors.success : AppColors.error,
+          Flexible(
+            child: Text(
+              '${isPositive ? '+' : ''}${trend!.toStringAsFixed(1)}%',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: isPositive ? AppColors.success : AppColors.error,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],

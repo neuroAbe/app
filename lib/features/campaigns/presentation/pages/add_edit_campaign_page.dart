@@ -123,7 +123,13 @@ class _AddEditCampaignPageState extends State<AddEditCampaignPage> {
                         items: state.clients.map((client) {
                           return DropdownMenuItem(
                             value: client.id,
-                            child: Text('${client.name} - ${client.company}'),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width - 100,
+                              child: Text(
+                                '${client.name} - ${client.company}',
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
                           );
                         }).toList(),
                         onChanged: (value) {
