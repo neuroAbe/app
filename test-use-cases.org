@@ -1,0 +1,307 @@
+#+TITLE: Campaign Manager App - Test Use Cases
+#+AUTHOR: Test Plan
+#+DATE: 2025-11-18
+#+DESCRIPTION: Comprehensive test scenarios for presentation demo
+
+* Overview
+
+This document contains realistic use cases for testing the Flutter Campaign Manager app before presentation. Test each scenario systematically and document results.
+
+** Testing Instructions
+
+1. Follow each use case step-by-step
+2. Mark status: =PASS= / =FAIL= / =PARTIAL=
+3. Document any issues in the "Actual Results" section
+4. Add notes about unexpected behavior
+
+* Use Case 1: New Client Onboarding Flow
+
+** Persona
+Marketing manager receives a new client
+
+** Status
+[ ] Not Tested
+
+** Test Steps
+
+1. Open app → Navigate to *Clients* tab
+2. Tap *+* floating action button
+3. Fill in new client form:
+   - Name: "TechStart Solutions"
+   - Email: "contact@techstart.io"
+   - Phone: "+1-555-0199"
+   - Company: "TechStart Inc"
+   - Industry: "Technology"
+   - Instagram: "@techstart"
+   - Twitter: "@techstartsolutions"
+4. Tap *Save*
+5. Verify client appears in list
+6. Tap on new client to view details
+7. Verify all data displayed correctly
+
+** Expected Result
+Client saved, visible in list, details page shows all info
+
+** Actual Result
+#+BEGIN_EXAMPLE
+[Document what actually happened here]
+#+END_EXAMPLE
+
+** Issues Found
+-
+
+** Notes
+-
+
+* Use Case 2: Campaign Creation & Tracking
+
+** Persona
+Manager creates campaign for existing client
+
+** Status
+[ ] Not Tested
+
+** Test Steps
+
+1. Navigate to *Campaigns* tab
+2. Tap *+* button
+3. Fill in campaign form:
+   - Name: "Holiday Season Launch"
+   - Select Client: "Acme Corporation" (from dropdown)
+   - Budget: "15000"
+   - Start Date: (select today's date)
+   - End Date: (select 2 weeks from now)
+   - Status: "Active"
+   - Description: "Q4 product launch campaign focusing on social media"
+4. Tap *Create Campaign*
+5. Verify campaign appears in "Active" tab
+6. Tap campaign to view details
+7. Check engagement chart displays
+8. Go back, filter by "Draft" - verify campaign not shown
+9. Filter by "All" - verify campaign shown
+
+** Expected Result
+Campaign created, filterable by status, detail view shows chart
+
+** Actual Result
+#+BEGIN_EXAMPLE
+[Document what actually happened here]
+#+END_EXAMPLE
+
+** Issues Found
+-
+
+** Notes
+-
+
+* Use Case 3: Task Management Workflow
+
+** Persona
+Manager tracks daily tasks
+
+** Status
+[ ] Not Tested
+
+** Test Steps
+
+1. Navigate to *Tasks* tab
+2. Tap *+* button
+3. Create task:
+   - Title: "Review campaign analytics"
+   - Description: "Check engagement metrics for all active campaigns"
+   - Priority: "High"
+   - Due Date: (select tomorrow)
+4. Tap *Create Task*
+5. Verify task appears in list with High priority indicator
+6. Create second task (Low priority)
+7. Tap checkbox on first task to mark complete
+8. Verify task gets strikethrough/visual completion indicator
+9. Swipe task left/right to delete
+10. Confirm deletion
+
+** Expected Result
+Tasks created, completable, deletable via swipe
+
+** Actual Result
+#+BEGIN_EXAMPLE
+[Document what actually happened here]
+#+END_EXAMPLE
+
+** Issues Found
+-
+
+** Notes
+-
+
+* Use Case 4: Analytics Review
+
+** Persona
+Manager reviews performance metrics
+
+** Status
+[ ] Not Tested
+
+** Test Steps
+
+1. Navigate to *Analytics* tab
+2. Verify "Engagement Over Time" line chart displays
+3. Verify data points are visible and interactive
+4. Scroll down
+5. Verify "Reach by Platform" bar chart displays
+6. Check platform colors match (Instagram pink, Facebook blue, etc.)
+7. Note metric values make sense
+
+** Expected Result
+Charts render properly, data visualizes correctly
+
+** Actual Result
+#+BEGIN_EXAMPLE
+[Document what actually happened here]
+#+END_EXAMPLE
+
+** Issues Found
+-
+
+** Notes
+-
+
+* Use Case 5: Dashboard Overview
+
+** Persona
+Manager checks daily overview
+
+** Status
+[ ] Not Tested
+
+** Test Steps
+
+1. Open app (lands on *Dashboard*)
+2. Verify metric cards show:
+   - Total Clients count
+   - Active Campaigns count
+   - Total Budget sum
+   - Completed Tasks count
+3. Check "Growth Trend" chart displays
+4. Scroll to "Recent Activity"
+5. Verify activity items show recent actions
+6. Pull down to refresh
+7. Verify refresh animation works
+
+** Expected Result
+Dashboard shows aggregated metrics, chart, activity feed
+
+** Actual Result
+#+BEGIN_EXAMPLE
+[Document what actually happened here]
+#+END_EXAMPLE
+
+** Issues Found
+-
+
+** Notes
+-
+
+* Use Case 6: Edit Existing Campaign
+
+** Persona
+Manager needs to update campaign budget
+
+** Status
+[ ] Not Tested
+
+** Test Steps
+
+1. Go to *Campaigns* tab
+2. Tap on "Summer Social Blitz" campaign
+3. Look for *Edit* button or edit option
+4. Update Budget: "25000"
+5. Update Status: "Completed"
+6. Save changes
+7. Verify updated in list
+8. Filter by "Completed" - verify campaign now appears there
+9. Filter by "Active" - verify campaign no longer there
+
+** Expected Result
+Campaign updates persist, filtering reflects changes
+
+** Actual Result
+#+BEGIN_EXAMPLE
+[Document what actually happened here]
+#+END_EXAMPLE
+
+** Issues Found
+-
+
+** Notes
+-
+
+* Use Case 7: Search & Filter Clients
+
+** Persona
+Manager looks for specific client
+
+** Status
+[ ] Not Tested
+
+** Test Steps
+
+1. Navigate to *Clients* tab
+2. Tap search field
+3. Type "Acme"
+4. Verify only matching clients show
+5. Clear search
+6. Verify all clients return
+7. Type partial match "tech"
+8. Verify case-insensitive search works
+
+** Expected Result
+Search filters clients in real-time
+
+** Actual Result
+#+BEGIN_EXAMPLE
+[Document what actually happened here]
+#+END_EXAMPLE
+
+** Issues Found
+-
+
+** Notes
+-
+
+* Critical Issues Summary
+
+** Blockers (Must Fix Before Demo)
+- [ ]
+
+** Major Issues (Should Fix)
+- [ ]
+
+** Minor Issues (Nice to Fix)
+- [ ]
+
+* Demo Readiness Checklist
+
+- [ ] All use cases tested
+- [ ] No critical bugs found
+- [ ] App launches successfully on demo device
+- [ ] Data persists correctly
+- [ ] UI looks polished
+- [ ] No crashes during typical workflows
+- [ ] Demo script prepared
+- [ ] Talking points ready
+
+* Demo Flow Recommendation
+
+Based on testing results, recommend this presentation order:
+
+1. *Dashboard* (30 sec) - Show overview and metrics
+2. *Campaigns* (2 min) - Main feature, show CRUD + filtering
+3. *Clients* (1 min) - Show search and client management
+4. *Analytics* (1 min) - Visual impact with charts
+5. *Tasks* (30 sec) - Quick utility feature demo
+
+* Notes & Observations
+
+#+BEGIN_EXAMPLE
+[Add any general observations, performance notes, or ideas here]
+#+END_EXAMPLE
