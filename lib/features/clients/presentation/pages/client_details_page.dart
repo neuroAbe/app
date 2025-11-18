@@ -42,14 +42,18 @@ class _ClientDetailsPageState extends State<ClientDetailsPage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.edit),
-            onPressed: () {
+            onPressed: () async {
               if (widget.client != null) {
-                Navigator.push(
+                await Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (_) => AddEditClientPage(client: widget.client),
                   ),
                 );
+                // Reload client details after editing
+                if (context.mounted) {
+                  context.read<ClientBloc>().add(LoadClientDetails(widget.clientId));
+                }
               }
             },
           ),
@@ -68,22 +72,24 @@ class _ClientDetailsPageState extends State<ClientDetailsPage> {
           ),
         ],
       ),
-      body: widget.client != null
-          ? _buildContent(widget.client!)
-          : BlocBuilder<ClientBloc, ClientState>(
-              builder: (context, state) {
-                if (state is ClientLoading) {
-                  return const LoadingIndicator();
-                }
-                if (state is ClientError) {
-                  return ErrorView(message: state.message);
-                }
-                if (state is ClientDetailsLoaded) {
-                  return _buildContent(state.client);
-                }
-                return const SizedBox.shrink();
-              },
-            ),
+      body: BlocBuilder<ClientBloc, ClientState>(
+        builder: (context, state) {
+          if (state is ClientLoading) {
+            return const LoadingIndicator();
+          }
+          if (state is ClientError) {
+            return ErrorView(message: state.message);
+          }
+          if (state is ClientDetailsLoaded) {
+            return _buildContent(state.client);
+          }
+          // Fallback to widget.client if available
+          if (widget.client != null) {
+            return _buildContent(widget.client!);
+          }
+          return const SizedBox.shrink();
+        },
+      ),
     );
   }
 

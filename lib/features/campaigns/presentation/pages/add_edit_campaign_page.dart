@@ -117,18 +117,16 @@ class _AddEditCampaignPageState extends State<AddEditCampaignPage> {
                     if (state is ClientsLoaded) {
                       return DropdownButtonFormField<String>(
                         value: _selectedClientId,
+                        isExpanded: true,
                         decoration: const InputDecoration(
                           labelText: 'Client *',
                         ),
                         items: state.clients.map((client) {
                           return DropdownMenuItem(
                             value: client.id,
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width - 100,
-                              child: Text(
-                                '${client.name} - ${client.company}',
-                                overflow: TextOverflow.ellipsis,
-                              ),
+                            child: Text(
+                              '${client.name} - ${client.company}',
+                              overflow: TextOverflow.ellipsis,
                             ),
                           );
                         }).toList(),

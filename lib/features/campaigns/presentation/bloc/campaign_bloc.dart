@@ -172,8 +172,10 @@ class CampaignBloc extends Bloc<CampaignEvent, CampaignState> {
   ) async {
     try {
       await _repository.addCampaign(event.campaign);
+      // Load fresh campaigns before emitting success
+      final campaigns = await _repository.getAllCampaigns();
       emit(const CampaignOperationSuccess('Campaign added successfully'));
-      add(LoadCampaigns());
+      emit(CampaignsLoaded(campaigns: campaigns));
     } catch (e) {
       emit(CampaignError(e.toString()));
     }
@@ -185,8 +187,15 @@ class CampaignBloc extends Bloc<CampaignEvent, CampaignState> {
   ) async {
     try {
       await _repository.updateCampaign(event.campaign);
+      // Load fresh campaigns before emitting success
+      final campaigns = await _repository.getAllCampaigns();
       emit(const CampaignOperationSuccess('Campaign updated successfully'));
-      add(LoadCampaigns());
+      emit(CampaignsLoaded(campaigns: campaigns));
+      // Also emit updated campaign details for detail page
+      final updatedCampaign = await _repository.getCampaignById(event.campaign.id);
+      if (updatedCampaign != null) {
+        emit(CampaignDetailsLoaded(updatedCampaign));
+      }
     } catch (e) {
       emit(CampaignError(e.toString()));
     }
@@ -198,8 +207,10 @@ class CampaignBloc extends Bloc<CampaignEvent, CampaignState> {
   ) async {
     try {
       await _repository.deleteCampaign(event.campaignId);
+      // Load fresh campaigns before emitting success
+      final campaigns = await _repository.getAllCampaigns();
       emit(const CampaignOperationSuccess('Campaign deleted successfully'));
-      add(LoadCampaigns());
+      emit(CampaignsLoaded(campaigns: campaigns));
     } catch (e) {
       emit(CampaignError(e.toString()));
     }

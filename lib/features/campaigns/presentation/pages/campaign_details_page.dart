@@ -46,14 +46,18 @@ class _CampaignDetailsPageState extends State<CampaignDetailsPage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.edit),
-            onPressed: () {
+            onPressed: () async {
               if (widget.campaign != null) {
-                Navigator.push(
+                await Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (_) => AddEditCampaignPage(campaign: widget.campaign),
                   ),
                 );
+                // Reload campaign details after editing
+                if (context.mounted) {
+                  context.read<CampaignBloc>().add(LoadCampaignDetails(widget.campaignId));
+                }
               }
             },
           ),
@@ -72,22 +76,24 @@ class _CampaignDetailsPageState extends State<CampaignDetailsPage> {
           ),
         ],
       ),
-      body: widget.campaign != null
-          ? _buildContent(widget.campaign!)
-          : BlocBuilder<CampaignBloc, CampaignState>(
-              builder: (context, state) {
-                if (state is CampaignLoading) {
-                  return const LoadingIndicator();
-                }
-                if (state is CampaignError) {
-                  return ErrorView(message: state.message);
-                }
-                if (state is CampaignDetailsLoaded) {
-                  return _buildContent(state.campaign);
-                }
-                return const SizedBox.shrink();
-              },
-            ),
+      body: BlocBuilder<CampaignBloc, CampaignState>(
+        builder: (context, state) {
+          if (state is CampaignLoading) {
+            return const LoadingIndicator();
+          }
+          if (state is CampaignError) {
+            return ErrorView(message: state.message);
+          }
+          if (state is CampaignDetailsLoaded) {
+            return _buildContent(state.campaign);
+          }
+          // Fallback to widget.campaign if available
+          if (widget.campaign != null) {
+            return _buildContent(widget.campaign!);
+          }
+          return const SizedBox.shrink();
+        },
+      ),
     );
   }
 

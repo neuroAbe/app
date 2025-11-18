@@ -172,8 +172,10 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
   ) async {
     try {
       await _repository.addClient(event.client);
+      // Load fresh clients before emitting success
+      final clients = await _repository.getAllClients();
       emit(const ClientOperationSuccess('Client added successfully'));
-      add(LoadClients());
+      emit(ClientsLoaded(clients: clients));
     } catch (e) {
       emit(ClientError(e.toString()));
     }
@@ -185,8 +187,15 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
   ) async {
     try {
       await _repository.updateClient(event.client);
+      // Load fresh clients before emitting success
+      final clients = await _repository.getAllClients();
       emit(const ClientOperationSuccess('Client updated successfully'));
-      add(LoadClients());
+      emit(ClientsLoaded(clients: clients));
+      // Also emit updated client details for detail page
+      final updatedClient = await _repository.getClientById(event.client.id);
+      if (updatedClient != null) {
+        emit(ClientDetailsLoaded(updatedClient));
+      }
     } catch (e) {
       emit(ClientError(e.toString()));
     }
@@ -198,8 +207,10 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
   ) async {
     try {
       await _repository.deleteClient(event.clientId);
+      // Load fresh clients before emitting success
+      final clients = await _repository.getAllClients();
       emit(const ClientOperationSuccess('Client deleted successfully'));
-      add(LoadClients());
+      emit(ClientsLoaded(clients: clients));
     } catch (e) {
       emit(ClientError(e.toString()));
     }
